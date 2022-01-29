@@ -6,11 +6,15 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    sidebar: true
+    sidebar: true,
+    messages: []
   },
   mutations: {
     toggleSidebar(state, payload) {
       state.sidebar = payload
+    },
+    setMessages(state, payload) {
+      state.messages = payload
     }
   },
   actions: {
@@ -31,13 +35,32 @@ export default new Vuex.Store({
         console.log(e)
       }
     },
-    async FETCH() {
-      const {data} = await api.post('http://89.108.78.225:8000/api/send/', {title: 'aaa', user_to: 1, body: 'lololo'})
-      console.log(data)
+
+    async GET_INBOX({commit}, payload) {
+      try {
+        const {data} = await api.get('http://89.108.78.225:8000/api/inbox/?page=1')
+        console.log(data, 'inbox')
+        commit('setMessages', data.results)
+      } catch (e) {
+        console.log(e)
+      }
+
+    },
+    async SENT_MESSAGES({commit}, payload){
+      try {
+        const {data} = await api.get('http://89.108.78.225:8000/api/sent/?page=1')
+        console.log(data, 'inbox')
+        commit('setMessages', data.results)
+      } catch (e) {
+        console.log(e)
+      }
     }
+
   },
   modules: {},
   getters: {
-    isSidebarOpen: state => state.sidebar
+    isSidebarOpen: state => state.sidebar,
+    getInbox: state => state.messages,
+
   }
 })

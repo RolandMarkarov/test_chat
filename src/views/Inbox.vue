@@ -3,15 +3,15 @@
 		<b-col>
 			<vue-good-table
 				:columns="columns"
-				:rows="rows"
-				:sort-options="{
-				enabled: true,
-				initialSortBy: {field: 'name', type: 'asc'}}">
+				:rows="getInbox"
+
+			>
 
 				<template slot="table-row" slot-scope="props">
-<!--				<span v-if="props.column.field === 'name'">-->
-
-<!--				</span>-->
+					<div v-if="props.column.field === 'actions'" class="d-flex justify-content-center">
+						<b-button size="sm" variant="warning" class="m-1">Delete</b-button>
+						<b-button size="sm" variant="success" class="m-1">Edit</b-button>
+					</div>
 				</template>
 			</vue-good-table>
 		</b-col>
@@ -20,31 +20,26 @@
 </template>
 
 <script>
+  import {mapGetters} from 'vuex'
+
   export default {
     name: "Inbox",
     data() {
       return {
         columns: [
           {
-            label: 'Name',
-            field: 'name',
+            label: 'To',
+            field: 'user_to.username',
           },
           {
             label: 'Message Title',
-            field: 'age',
-            type: 'number',
+            field: 'title',
           },
-          // {
-          //   label: 'Created On',
-          //   field: 'createdAt',
-          //   type: 'date',
-          //   dateInputFormat: 'yyyy-MM-dd',
-          //   dateOutputFormat: 'MMM do yy',
-          // },
           {
             label: 'Actions',
-            field: 'score',
-            type: 'percentage',
+            field: 'actions',
+            tdClass: "text-right",
+            thClass: "text-right"
           },
         ],
         rows: [
@@ -56,6 +51,9 @@
           {id: 6, name: "John", age: 20, createdAt: '2011-10-31', score: 0.03343},
         ],
       }
+    },
+    computed: {
+      ...mapGetters(['getInbox'])
     }
   }
 </script>

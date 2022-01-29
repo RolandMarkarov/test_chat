@@ -9,11 +9,15 @@ let options = {
   withCredentials: true
 }
 const Axios = axios.create(options)
+console.log(localStorage.getItem('chat-token'))
+let token = localStorage.getItem('chat-token')
 
-Axios.defaults.headers['Authorization'] = 'token d39076d6da35af2144cceac87f0a4ae03e0daffe'
+
+if (token) {
+  Axios.defaults.headers['Authorization'] = 'token ' + token
+}
 
 
-console.log(Axios.defaults, 'axios headers')
 const post = (url, formData) => Axios.post(url, formData);
 const update = (url, formData) => Axios.put(url, formData);
 const remove = (url, formData) => Axios.delete(url, formData);
