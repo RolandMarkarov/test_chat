@@ -1,16 +1,21 @@
 <template>
 	<b-row class="d-flex align-items-center p-4">
+		{{getInbox}}
 		<b-col>
 			<vue-good-table
 				:columns="messagesColumn"
 				:rows="getInbox"
-
+				:pagination-options="{
+					enabled: true,
+					perPage: 2,
+					mode: 'records',
+					perPageDropdown: [2],}"
 			>
 
 				<template slot="table-row" slot-scope="props">
 					<div v-if="props.column.field === 'actions'" class="d-flex justify-content-center">
 						<b-button size="sm" variant="warning" class="m-1">Delete</b-button>
-						<b-button size="sm" variant="success" class="m-1">Edit</b-button>
+						<b-button size="sm" variant="success" class="m-1" @click="readCurrentMessage(props.row.id)">View</b-button>
 					</div>
 				</template>
 			</vue-good-table>
@@ -52,10 +57,15 @@
         ],
       }
     },
+    methods: {
+      readCurrentMessage(id) {
+        console.log(id)
+      },
+    },
     computed: {
       ...mapGetters(['getInbox', 'messageType']),
-			messagesColumn(){
-        if (this.messageType === 'sent'){
+      messagesColumn() {
+        if (this.messageType === 'sent') {
           return [
             {
               label: 'To',
@@ -72,7 +82,7 @@
               thClass: "text-right"
             },
           ]
-				}else if (this.messageType === 'inbox'){
+        } else if (this.messageType === 'inbox') {
           return [
             {
               label: 'From',
@@ -83,8 +93,8 @@
               field: 'title',
             },
           ]
-				}
-			}
+        }
+      }
     }
   }
 </script>
