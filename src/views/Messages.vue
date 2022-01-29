@@ -2,7 +2,7 @@
 	<b-row class="d-flex align-items-center p-4">
 		<b-col>
 			<vue-good-table
-				:columns="columns"
+				:columns="messagesColumn"
 				:rows="getInbox"
 
 			>
@@ -53,7 +53,38 @@
       }
     },
     computed: {
-      ...mapGetters(['getInbox'])
+      ...mapGetters(['getInbox', 'messageType']),
+			messagesColumn(){
+        if (this.messageType === 'sent'){
+          return [
+            {
+              label: 'To',
+              field: 'user_to.username',
+            },
+            {
+              label: 'Message Title',
+              field: 'title',
+            },
+            {
+              label: 'Actions',
+              field: 'actions',
+              tdClass: "text-right",
+              thClass: "text-right"
+            },
+          ]
+				}else if (this.messageType === 'inbox'){
+          return [
+            {
+              label: 'From',
+              field: 'user_from.username',
+            },
+            {
+              label: 'Message Title',
+              field: 'title',
+            },
+          ]
+				}
+			}
     }
   }
 </script>

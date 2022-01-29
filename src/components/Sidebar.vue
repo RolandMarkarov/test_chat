@@ -29,10 +29,10 @@
         this.$bvModal.show('compose')
       },
       handlerInbox() {
-        this.$store.dispatch('GET_INBOX')
+        this.$store.dispatch('GET_INBOX', 'inbox')
       },
       handlerSent() {
-        this.$store.dispatch('SENT_MESSAGES')
+        this.$store.dispatch('SENT_MESSAGES', 'sent')
       }
     }
   }

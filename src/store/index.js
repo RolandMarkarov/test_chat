@@ -7,7 +7,8 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     sidebar: true,
-    messages: []
+    messages: [],
+    messageType: 'inbox'
   },
   mutations: {
     toggleSidebar(state, payload) {
@@ -15,6 +16,9 @@ export default new Vuex.Store({
     },
     setMessages(state, payload) {
       state.messages = payload
+    },
+    setMessageType(state, payload) {
+      state.messageType = payload
     }
   },
   actions: {
@@ -41,16 +45,18 @@ export default new Vuex.Store({
         const {data} = await api.get('http://89.108.78.225:8000/api/inbox/?page=1')
         console.log(data, 'inbox')
         commit('setMessages', data.results)
+        commit('setMessageType', payload)
       } catch (e) {
         console.log(e)
       }
 
     },
-    async SENT_MESSAGES({commit}, payload){
+    async SENT_MESSAGES({commit}, payload) {
       try {
         const {data} = await api.get('http://89.108.78.225:8000/api/sent/?page=1')
         console.log(data, 'inbox')
         commit('setMessages', data.results)
+        commit('setMessageType', payload)
       } catch (e) {
         console.log(e)
       }
@@ -61,6 +67,7 @@ export default new Vuex.Store({
   getters: {
     isSidebarOpen: state => state.sidebar,
     getInbox: state => state.messages,
+    messageType: state => state.messageType
 
   }
 })
