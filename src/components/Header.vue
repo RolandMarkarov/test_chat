@@ -23,6 +23,7 @@
         this.$root.$emit('bv::toggle::collapse', 'sidebar1')
       },
       signOut(){
+        localStorage.removeItem('chat-token')
         this.$router.push({path:'/', query:{login: 'required'}})
 			}
     },

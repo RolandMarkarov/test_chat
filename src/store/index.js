@@ -60,6 +60,9 @@ export default new Vuex.Store({
       } catch (e) {
         console.log(e)
       }
+    },
+    SIGN_OUT({commit}, payload){
+      localStorage.removeItem('chat-token')
     }
 
   },
