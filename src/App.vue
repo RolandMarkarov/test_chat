@@ -1,32 +1,51 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
-  </div>
+	<div id="app">
+		<component :is="layout">
+			<router-view/>
+		</component>
+	</div>
 </template>
 
 <style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-
-#nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
-}
+	#app {
+	}
 </style>
+<script>
+  import Sidebar from "./components/Sidebar";
+  import HeaderChat from "./components/Header";
+  import EmptyLayout from "@/layout/EmptyLayout";
+  import MainLayout from "@/layout/MainLayout";
+
+  export default {
+    components: {HeaderChat, Sidebar, MainLayout, EmptyLayout},
+    data() {
+      return {
+        windowWidth: window.innerWidth,
+      }
+    },
+    computed: {
+      layout() {
+        console.log(this.$route.meta.layout, 'this.$route.meta.layout')
+        return (this.$route.meta.layout || 'empty') + "-layout"
+      }
+    },
+    watch: {
+      windowWidth(newWidth, oldWidth) {
+        if (newWidth < 720) {
+          this.$store.commit('toggleSidebar', false)
+          this.$root.$emit('bv::toggle::collapse', 'sidebar1')
+        }
+      }
+    },
+    methods: {
+      onResize() {
+        this.windowWidth = window.innerWidth
+      }
+    },
+    mounted() {
+      this.$nextTick(() => {
+        window.addEventListener('resize', this.onResize);
+      })
+    },
+  }
+</script>
