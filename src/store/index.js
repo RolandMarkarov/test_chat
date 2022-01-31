@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 import api from '../api'
 
 Vue.use(Vuex)
+const BASE_URL = process.env['VUE_APP_HOST']
 
 export default new Vuex.Store({
   state: {
@@ -29,7 +30,7 @@ export default new Vuex.Store({
   actions: {
     async LOGIN({commit}, {username, password}) {
       try {
-        const {data} = await api.post('http://89.108.78.225:8000/api/token/', {username, password})
+        const {data} = await api.post(BASE_URL+'api/token/', {username, password})
         localStorage.setItem('chat-token', data.token)
         console.log(data, 'login')
         return data
@@ -39,7 +40,7 @@ export default new Vuex.Store({
     },
     async SEND_MESSAGE({commit}, {body, user, title}) {
       try {
-        const {data} = await api.post('http://89.108.78.225:8000/api/send/', {message: {body, user, title}})
+        const {data} = await api.post(BASE_URL+'api/send/', {message: {body, user, title}})
         return data
       } catch (e) {
         console.log(e)
@@ -48,7 +49,7 @@ export default new Vuex.Store({
 
     async GET_INBOX({commit}, payload) {
       try {
-        const {data} = await api.get('http://89.108.78.225:8000/api/inbox/?page=1')
+        const {data} = await api.get(BASE_URL+'api/inbox/?page=1')
         console.log(data, 'inbox')
         commit('setMessages', data.results)
         commit('setMessageType', payload)
@@ -60,7 +61,7 @@ export default new Vuex.Store({
 
     async SENT_MESSAGES({commit}, payload) {
       try {
-        const {data} = await api.get('http://89.108.78.225:8000/api/sent/?page=1')
+        const {data} = await api.get(BASE_URL+'api/sent/?page=1')
         commit('setMessages', data.results)
         commit('setMessageType', payload)
       } catch (e) {
@@ -69,7 +70,7 @@ export default new Vuex.Store({
     },
     async GET_CURRENT_MESSAGE({commit}, payload) {
      try {
-       const {data} = await api.get(`http://89.108.78.225:8000/api/message/${payload}/`)
+       const {data} = await api.get(BASE_URL+ `api/message/${payload}/`)
        commit('setCurrentMessage', data)
      }catch (e) {
        console.log(e)
