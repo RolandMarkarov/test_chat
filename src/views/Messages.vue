@@ -13,7 +13,6 @@
 
 				<template slot="table-row" slot-scope="props">
 					<div v-if="props.column.field === 'actions'" class="d-flex justify-content-center">
-						<b-button size="sm" variant="warning" class="m-1">Delete</b-button>
 						<b-button size="sm" variant="success" class="m-1" @click="readCurrentMessage(props.row.id)">View</b-button>
 					</div>
 				</template>

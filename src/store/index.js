@@ -6,6 +6,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    user:{},
     sidebar: true,
     messages: [],
     messageType: 'inbox',
@@ -30,6 +31,7 @@ export default new Vuex.Store({
       try {
         const {data} = await api.post('http://89.108.78.225:8000/api/token/', {username, password})
         localStorage.setItem('chat-token', data.token)
+        console.log(data, 'login')
         return data
       } catch (e) {
         console.log(e)
