@@ -22,6 +22,9 @@
       closeModal(){
         this.$bvModal.hide('current')
 			}
+		},
+		watch:{
+      getCurrentMessage(){}
 		}
   }
 </script>

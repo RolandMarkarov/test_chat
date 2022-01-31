@@ -13,7 +13,7 @@
 			</b-input-group>
 			<b-form-textarea
 				id="textarea"
-				v-model="message.text"
+				v-model="message.body"
 				placeholder="Enter Your text here..."
 				no-resize
 				rows="3"
@@ -34,7 +34,7 @@
     data() {
       return {
         message: {
-          text: '',
+          body: '',
           user: '',
           title:''
         }

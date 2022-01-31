@@ -8,7 +8,7 @@
 					enabled: true,
 					perPage: 10,
 					mode: 'records',
-					perPageDropdown: [10, 15],}"
+					perPageDropdown: [10, 15]}"
 			>
 
 				<template slot="table-row" slot-scope="props">
@@ -19,7 +19,7 @@
 				</template>
 			</vue-good-table>
 		</b-col>
-		<current-message-modal v-if="getCurrentMessage.title"/>
+		<current-message-modal/>
 	</b-row>
 </template>
 
@@ -60,13 +60,13 @@
     },
     methods: {
       readCurrentMessage(id) {
-        console.log(id)
         this.$store.dispatch('GET_CURRENT_MESSAGE', id)
-				if (this.getCurrentMessage?.title){
-				  this.$bvModal.show('current')
-				}
+        this.$bvModal.show('current')
       },
     },
+		async mounted(){
+      await this.$store.dispatch('GET_INBOX', 'inbox')
+		},
     computed: {
       ...mapGetters(['getInbox', 'messageType', 'getCurrentMessage']),
       messagesColumn() {

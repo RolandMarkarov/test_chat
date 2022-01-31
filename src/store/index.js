@@ -35,9 +35,9 @@ export default new Vuex.Store({
         console.log(e)
       }
     },
-    async SEND_MESSAGE({commit}, {text, user, title}) {
+    async SEND_MESSAGE({commit}, {body, user, title}) {
       try {
-        const {data} = await api.post('http://89.108.78.225:8000/api/send/', {message: {text, user, title}})
+        const {data} = await api.post('http://89.108.78.225:8000/api/send/', {message: {body, user, title}})
         return data
       } catch (e) {
         console.log(e)
