@@ -5,7 +5,7 @@
 				:columns="messagesColumn"
 				:rows="getInbox"
 				:pagination-options="{
-					enabled: true,
+					enabled: false,
 					perPage: 10,
 					mode: 'records',
 					perPageDropdown: [10, 15]}"
