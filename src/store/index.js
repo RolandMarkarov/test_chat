@@ -8,7 +8,8 @@ export default new Vuex.Store({
   state: {
     sidebar: true,
     messages: [],
-    messageType: 'inbox'
+    messageType: 'inbox',
+    currentMessage: {}
   },
   mutations: {
     toggleSidebar(state, payload) {
@@ -19,6 +20,9 @@ export default new Vuex.Store({
     },
     setMessageType(state, payload) {
       state.messageType = payload
+    },
+    setCurrentMessage(state, payload) {
+      state.currentMessage = payload
     }
   },
   actions: {
@@ -51,17 +55,25 @@ export default new Vuex.Store({
       }
 
     },
+
     async SENT_MESSAGES({commit}, payload) {
       try {
         const {data} = await api.get('http://89.108.78.225:8000/api/sent/?page=1')
-        console.log(data, 'inbox')
         commit('setMessages', data.results)
         commit('setMessageType', payload)
       } catch (e) {
         console.log(e)
       }
     },
-    SIGN_OUT({commit}, payload){
+    async GET_CURRENT_MESSAGE({commit}, payload) {
+     try {
+       const {data} = await api.get(`http://89.108.78.225:8000/api/message/${payload}/`)
+       commit('setCurrentMessage', data)
+     }catch (e) {
+       console.log(e)
+     }
+    },
+    SIGN_OUT({commit}, payload) {
       localStorage.removeItem('chat-token')
     }
 
@@ -70,7 +82,8 @@ export default new Vuex.Store({
   getters: {
     isSidebarOpen: state => state.sidebar,
     getInbox: state => state.messages,
-    messageType: state => state.messageType
+    messageType: state => state.messageType,
+    getCurrentMessage: state => state.currentMessage
 
   }
 })

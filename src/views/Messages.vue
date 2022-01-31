@@ -1,15 +1,14 @@
 <template>
 	<b-row class="d-flex align-items-center p-4">
-		{{getInbox}}
 		<b-col>
 			<vue-good-table
 				:columns="messagesColumn"
 				:rows="getInbox"
 				:pagination-options="{
 					enabled: true,
-					perPage: 2,
+					perPage: 10,
 					mode: 'records',
-					perPageDropdown: [2],}"
+					perPageDropdown: [10, 15],}"
 			>
 
 				<template slot="table-row" slot-scope="props">
@@ -20,15 +19,17 @@
 				</template>
 			</vue-good-table>
 		</b-col>
-
+		<current-message-modal v-if="getCurrentMessage.title"/>
 	</b-row>
 </template>
 
 <script>
   import {mapGetters} from 'vuex'
+  import CurrentMessageModal from "../components/CurrentMessageModal";
 
   export default {
     name: "Inbox",
+    components: {CurrentMessageModal},
     data() {
       return {
         columns: [
@@ -60,10 +61,14 @@
     methods: {
       readCurrentMessage(id) {
         console.log(id)
+        this.$store.dispatch('GET_CURRENT_MESSAGE', id)
+				if (this.getCurrentMessage?.title){
+				  this.$bvModal.show('current')
+				}
       },
     },
     computed: {
-      ...mapGetters(['getInbox', 'messageType']),
+      ...mapGetters(['getInbox', 'messageType', 'getCurrentMessage']),
       messagesColumn() {
         if (this.messageType === 'sent') {
           return [
@@ -91,6 +96,12 @@
             {
               label: 'Message Title',
               field: 'title',
+            },
+            {
+              label: 'Actions',
+              field: 'actions',
+              tdClass: "text-right",
+              thClass: "text-right"
             },
           ]
         }
